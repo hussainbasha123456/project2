@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CityScope – Schools</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Leaflet Map CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header>
+  <h1>🏫 Schools in Your City</h1>
+  <p>Verified locations • Honest info</p>
+</header>
+
+<div class="search-bar">
+  <input
+    type="text"
+    id="searchInput"
+    placeholder="Search school or area..."
+  />
+</div>
+<div class="toggle">
+  <button id="schoolsBtn" class="active">Schools</button>
+  <button id="collegesBtn">Colleges</button>
+  
+</div>
+
+<div class="container">
+  <div id="map" class="map"></div>
+  <div id="schoolList" class="list"></div>
+</div>
+
+<!-- Leaflet Map JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="script.js"></script>
+
+</body>
+
+<script>
+
+  if (!localStorage.getItem("currentUser")) {
+    window.location.href = "login.html";
+  }
+</script>
+</html>

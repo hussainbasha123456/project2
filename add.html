@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add School / College</title>
+  <link rel="stylesheet" href="add.css">
+</head>
+<body>
+
+  <h2>Add School / College</h2>
+
+  <form id="addForm">
+    <select id="type" required>
+      <option value="">Select Type</option>
+      <option value="schools">School</option>
+      <option value="colleges">College</option>
+    </select>
+
+    <input type="text" id="name" placeholder="Name" required />
+    <input type="text" id="area" placeholder="Area / City" required />
+    <textarea id="about" placeholder="About"></textarea>
+    <input type="text" id="fees" placeholder="Fees Range" />
+    <input type="text" id="video" placeholder="YouTube Embed URL" />
+    <input type="number" id="lat" placeholder="Latitude" step="any" required />
+    <input type="number" id="lng" placeholder="Longitude" step="any" required />
+
+    <button type="submit">Save</button>
+  </form>
+
+  <script src="add.js"></script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>School / College Details</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="details.css" />
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1 class="title">School Name</h1>
+    <p class="subtitle">Area · City</p>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <section class="card">
+      <h3>About</h3>
+      <p id="aboutText">About information not available.</p>
+    </section>
+
+    <section class="card">
+      <h3>Fees Structure</h3>
+      <p id="fees">—</p>
+      <button id="getDirectionsBtn" class="primary-btn">Get Directions</button>
+    </section>
+
+    <section class="card">
+      <h3>Campus Video</h3>
+      <iframe
+        id="videoFrame"
+        width="100%"
+        height="220"
+        frameborder="0"
+        allowfullscreen>
+      </iframe>
+    </section>
+
+    <!-- REVIEWS -->
+    <section class="card">
+      <h3>Reviews</h3>
+
+      <div id="starRating" class="stars">
+        <span data-value="1">★</span>
+        <span data-value="2">★</span>
+        <span data-value="3">★</span>
+        <span data-value="4">★</span>
+        <span data-value="5">★</span>
+      </div>
+
+      <textarea id="reviewInput" placeholder="Write your review..."></textarea>
+      <button id="submitReviewBtn">Submit Review</button>
+
+      <div id="reviewsList"></div>
+    </section>
+
+  </div>
+
+  <!-- SCRIPT -->
+  <script>
+    // ---------------- GET PARAMS ----------------
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+    const type = params.get("type");
+
+    // ---------------- LOAD DATA ----------------
+    const schools = JSON.parse(localStorage.getItem("all_schools")) || [];
+    const colleges = JSON.parse(localStorage.getItem("all_colleges")) || [];
+
+    const list = type === "schools" ? schools : colleges;
+    const item = list.find(i => i.id === id);
+
+    if (!item) {
+      alert("Item not found");
+      throw new Error("Item not found");
+    }
+
+    // ---------------- FILL UI ----------------
+    document.querySelector(".title").innerText = item.name;
+    document.querySelector(".subtitle").innerText = item.area;
+    document.getElementById("aboutText").innerText = item.about || "No description available";
+    document.getElementById("fees").innerText = item.fees || "Not specified";
+
+    if (item.video) {
+      document.getElementById("videoFrame").src = item.video;
+    }
+
+    // ---------------- DIRECTIONS ----------------
+    document.getElementById("getDirectionsBtn").onclick = () => {
+      if (!navigator.geolocation) {
+        alert("Geolocation not supported");
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(pos => {
+        const userLat = pos.coords.latitude;
+        const userLng = pos.coords.longitude;
+
+        const url =
+          `https://www.openstreetmap.org/directions?engine=fossgis_osrm_car&route=` +
+          `${userLat},${userLng};${item.lat},${item.lng}`;
+
+        window.open(url, "_blank");
+      }, () => {
+        alert("Please allow location access");
+      });
+    };
+
+    // ---------------- REVIEWS ----------------
+    const reviewInput = document.getElementById("reviewInput");
+    const submitBtn = document.getElementById("submitReviewBtn");
+    const reviewsList = document.getElementById("reviewsList");
+    const stars = document.querySelectorAll("#starRating span");
+
+    let selectedStars = 0;
+    const reviewKey = `reviews_${type}_${id}`;
+    const savedReviews = JSON.parse(localStorage.getItem(reviewKey)) || [];
+
+    stars.forEach(star => {
+      star.onclick = () => {
+        selectedStars = Number(star.dataset.value);
+        stars.forEach(s => s.classList.remove("active"));
+        for (let i = 0; i < selectedStars; i++) {
+          stars[i].classList.add("active");
+        }
+      };
+    });
+
+    function addReviewToUI(review) {
+      const div = document.createElement("div");
+      div.className = "review-item";
+      div.innerHTML = `
+        <strong>${review.user}</strong>
+        <div>${"★".repeat(review.stars)}</div>
+        <p>${review.text}</p>
+      `;
+      reviewsList.prepend(div);
+    }
+
+    savedReviews.forEach(addReviewToUI);
+
+    submitBtn.onclick = () => {
+      const text = reviewInput.value.trim();
+      const user = localStorage.getItem("currentUser");
+
+      if (!user || !text || selectedStars === 0) {
+        alert("Login, rating and review required");
+        return;
+      }
+
+      const review = { user, text, stars: selectedStars };
+      savedReviews.push(review);
+      localStorage.setItem(reviewKey, JSON.stringify(savedReviews));
+      addReviewToUI(review);
+
+      reviewInput.value = "";
+      selectedStars = 0;
+      stars.forEach(s => s.classList.remove("active"));
+    };
+  </script>
+
+</body>
+</html>

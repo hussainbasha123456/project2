@@ -1,0 +1,118 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #f5f5f5;
+  }
+  
+  /* Header */
+  header {
+    background: #111;
+    color: white;
+    padding: 14px;
+  }
+  
+  header h1 {
+    margin: 0;
+    font-size: 18px;
+  }
+  
+  header p {
+    margin: 4px 0 0;
+    font-size: 13px;
+    opacity: 0.8;
+  }
+  
+  /* Search */
+  .search-bar {
+    background: white;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .search-bar input {
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    outline: none;
+  }
+  
+  /* Layout */
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 110px);
+  }
+  
+  /* Map */
+  .map {
+    height: 45vh;
+    width: 100%;
+  }
+  
+  /* School list */
+  .list {
+    flex: 1;
+    background: white;
+    overflow-y: auto;
+  }
+  
+  /* School card */
+  .school-card {
+    padding: 14px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .school-card:active {
+    background: #f0f0f0;
+  }
+  
+  .school-name {
+    font-weight: 600;
+    font-size: 15px;
+  }
+  
+  .school-info {
+    font-size: 13px;
+    color: #555;
+    margin-top: 4px;
+  }
+  
+  /* Desktop view */
+  @media (min-width: 768px) {
+    .container {
+      flex-direction: row;
+    }
+  
+    .map {
+      width: 60%;
+      height: 100%;
+    }
+  
+    .list {
+      width: 40%;
+    }
+  }
+  .toggle {
+    display: flex;
+    background: white;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .toggle button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    background: #f5f5f5;
+    font-size: 14px;
+  }
+  
+  .toggle button.active {
+    background: #111;
+    color: white;
+  }
