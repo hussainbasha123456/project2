@@ -6,6 +6,11 @@
   <title>Add School / College</title>
   <link rel="stylesheet" href="add.css">
 </head>
+<script>
+    if (!localStorage.getItem("currentUser")) {
+      window.location.replace("login.html");
+    }
+  </script>
 <body>
 
   <h2>Add School / College</h2>
